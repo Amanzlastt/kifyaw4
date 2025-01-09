@@ -3,7 +3,7 @@ import numpy as np
 import os 
 
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import OneHotEncoder
 
 train_data = pd.read_csv("C:\\Users\\Aman\\Desktop\\kifyaw4\\data\\raw\\train.csv")
 test_data = pd.read_csv("C:\\Users\\Aman\\Desktop\\kifyaw4\\data\\raw\\test.csv")
@@ -22,14 +22,16 @@ train_data = drop_missing_dates(train_data)
 test_data = drop_missing_dates(test_data)
 
 # Encodin catagorical column ("State Hoiday")
-encoder = LabelEncoder()
+from sklearn.preprocessing import OneHotEncoder
+
+
 def encoder_fun(df, column):
     df[column] = df[column].astype(str)
-    encoded_column = encoder.fit_transform(df[column])
-    df[column] = encoded_column
-    # encoded_column_df = pd.DataFrame(encoded_column, columns=encoder.get_feature_names_out([column]))
-    # df_encoded = pd.concat([df.drop(column, axis= 1), encoded_column_df], axis=1)
-    return df
+    encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+    encoded= encoder.fit_transform(df[[column]])
+    encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out([column]))
+    df_encoded = pd.concat([df.drop(column, axis= 1), encoded_df], axis=1)
+    return df_encoded
 
 train_data = encoder_fun(train_data, 'StateHoliday')
 test_data = encoder_fun(test_data, 'StateHoliday')
@@ -47,9 +49,6 @@ test_imputed = pd.DataFrame(test_imputed,columns=test_data.drop(['Date'], axis=1
 # merging date column with the imputed ones
 train_processed_data = pd.concat([train_data[['Date']], train_imputed], axis=1)
 test_processed_data = pd.concat([test_data[['Date']], test_imputed], axis=1)
-
-print (train_processed_data.dtypes)
-
 
 data_path = os.path.join("data", 'processed')
 

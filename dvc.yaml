@@ -12,3 +12,6 @@ stages:
     - src/pre_processing
     outs:
     - random_model_1.pkl
+  feature:
+    cmd: engineering -d data/processed -d src/pre_processing.py -o added_features.csv
+      python src/feature_engineering
