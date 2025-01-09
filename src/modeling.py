@@ -3,8 +3,14 @@ import numpy as np
 import os
 import pickle
 
+# loading the data
 df = pd.read_csv("C:\\Users\\Aman\\Desktop\\kifyaw4\\data\\processed\\train_processed.csv")
-x = df.drop('Sales', axis=1)
+
+# convert to date time data type
+df['Date'] = pd.to_datetime(df['Date'])
+
+# labeling the data
+x = df.drop(['Sales', 'Date'], axis=1)
 y = df['Sales']
 
 from sklearn.model_selection import train_test_split

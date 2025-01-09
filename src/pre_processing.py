@@ -48,6 +48,7 @@ test_imputed = pd.DataFrame(test_imputed,columns=test_data.drop(['Date'], axis=1
 train_processed_data = pd.concat([train_data[['Date']], train_imputed], axis=1)
 test_processed_data = pd.concat([test_data[['Date']], test_imputed], axis=1)
 
+print (train_processed_data.dtypes)
 
 
 data_path = os.path.join("data", 'processed')
@@ -56,3 +57,4 @@ os.makedirs(data_path)
 
 train_processed_data.to_csv(os.path.join(data_path, 'train_processed.csv'), index=False)
 test_processed_data.to_csv(os.path.join(data_path, 'test_processed.csv'), index=False)
+
