@@ -5,13 +5,22 @@ stages:
     - data/raw
     outs:
     - data/processed
-  modeling:
-    cmd: python src/modeling.py
-    deps:
-    - data/processed
-    - src/pre_processing
-    outs:
-    - random_model_1.pkl
   feature:
     cmd: engineering -d data/processed -d src/pre_processing.py -o added_features.csv
       python src/feature_engineering
+    outs:
+    - data/featured
+  model_building:
+    cmd: python src/modeling.py
+    deps:
+    - data/featured
+    - src/modeling.py
+    outs:
+    - trained_model.pkl
+  model_evaluation:
+    cmd: python src/evaluation.py
+    deps:
+    - data/model
+    - src/evaluation.py
+    metrics:
+    - metrics.json

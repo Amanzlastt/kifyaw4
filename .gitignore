@@ -2,3 +2,5 @@
 rossmann-store-sales/
 data/
 /random_model_1.pkl
+/trained_model.pkl
+/metrics.json
